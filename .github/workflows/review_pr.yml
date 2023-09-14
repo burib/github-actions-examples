@@ -1,0 +1,56 @@
+name: 'Review PR'
+
+permissions:
+  security-events: write
+  actions: read
+  id-token: write
+  contents: write
+  pull-requests: write
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    paths:
+      - test_folder/**
+  workflow_dispatch:
+
+jobs:
+  debug:
+    name: "Dump GitHub context"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        
+  on_pr_merged:
+    if: ${{ github.event.pull_request.merged }}
+    name: "PR is merged"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Echo stuff
+        run: |
+          echo "PR is merged"
+          
+  on_pr_opened:
+    if: ${{ github.event.pull_request.merged == false }}
+    name: "PR is closed"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Echo stuff
+        run: |
+          echo "PR is closed"
