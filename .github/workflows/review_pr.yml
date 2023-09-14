@@ -45,7 +45,7 @@ jobs:
           
   on_pr_opened:
     if: ${{ github.event.pull_request.merged == false }}
-    name: "PR is closed"
+    name: "PR is opened"
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout repo
