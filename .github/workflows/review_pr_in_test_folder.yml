@@ -53,4 +53,4 @@ jobs:
 
       - name: Echo stuff
         run: |
-          echo "PR is closed"
+          echo "PR is opened"
