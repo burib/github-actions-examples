@@ -8,7 +8,7 @@ permissions:
   pull-requests: write
 
 on:
-  push:
+  # push:
   workflow_dispatch:
     inputs:
       target_stage:
