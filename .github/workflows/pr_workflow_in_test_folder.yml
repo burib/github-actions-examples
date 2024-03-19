@@ -69,7 +69,7 @@ jobs:
           echo "### PR is merged. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
           
   on_pr_closed_without_merge:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    if: github.event_name == 'pull_request' && ( github.event.action == 'closed' && github.event.pull_request.merged == false )
     name: "PR is closed without merge. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
     env:
