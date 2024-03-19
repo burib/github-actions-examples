@@ -83,6 +83,21 @@ jobs:
           echo "### PR is closed without merge. stage: $STAGE"
           echo "### PR is closed without merge. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
 
+  on_pr_closed_or_merged:
+    if: github.event_name == 'pull_request' && ( github.event.action == 'closed' || github.event.pull_request.merged )
+    name: "PR is closed or merged. pr-${{ github.event.number}}"
+    runs-on: "ubuntu-latest"
+    env:
+      STAGE: "pr-${{ github.event.number}}"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "### PR is closed or merged. stage: $STAGE"
+          echo "### PR is closed or merged. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
+
   on_main_branch_only:
     if: github.ref == 'refs/heads/main'
     name: "Runs on Main branch only"
