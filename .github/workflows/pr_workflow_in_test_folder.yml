@@ -27,8 +27,8 @@ on:
       - test_folder/**
 
 env:
-  STAGE: "pr-${{ github.event.number }}"
-  ENVIRONMENT: "dev"
+  TARGET_STAGE: "pr-${{ github.event.number }}"
+  TARGET_ENVIRONMENT: "dev"
 
 jobs:
   debug:
@@ -45,7 +45,7 @@ jobs:
 
   on_pr_opened:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
-    name: "PR is opened. $STAGE"
+    name: "PR is opened. $env.TARGET_STAGE"
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
