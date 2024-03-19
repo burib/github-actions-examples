@@ -51,7 +51,7 @@ jobs:
       - name: Echo stuff
         run: |
           echo "PR is merged. stage: $STAGE"
-          echo '### Stage is: $STAGE' >> "$GITHUB_STEP_SUMMARY"
+          echo "### Stage is: $STAGE" >> "$GITHUB_STEP_SUMMARY"
           
   on_pr_opened:
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == false
@@ -66,7 +66,7 @@ jobs:
       - name: Echo stuff
         run: |
           echo "PR is opened. stage: $STAGE"
-          echo '### Stage is: $STAGE' >> "$GITHUB_STEP_SUMMARY"
+          echo "### Stage is: $STAGE" >> "$GITHUB_STEP_SUMMARY"
 
   on_main_branch_only:
     if: github.ref == 'refs/heads/main'
