@@ -38,7 +38,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
         
   on_pr_merged:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged
+    if: ${{ (github.event_name == 'pull_request') && (github.event.pull_request.merged) }}
     name: "PR is merged"
     runs-on: "ubuntu-latest"
     steps:
@@ -50,7 +50,7 @@ jobs:
           echo "PR is merged"
           
   on_pr_opened:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == false && 
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == false
     name: "PR is opened"
     runs-on: "ubuntu-latest"
     steps:
