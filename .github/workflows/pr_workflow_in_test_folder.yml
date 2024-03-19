@@ -49,6 +49,8 @@ jobs:
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
+    environment: 
+      name: $TARGET_STAGE
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
