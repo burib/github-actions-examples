@@ -50,7 +50,7 @@ jobs:
     env:
       STAGE: "pr-${{ github.event.number}}"
     environment: 
-      name: $TARGET_STAGE
+      name: "pr-${{ github.event.number }}"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
