@@ -70,7 +70,7 @@ jobs:
           
   on_pr_closed_without_merge:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    name: "PR is opened. pr-${{ github.event.number}}"
+    name: "PR is closed without merge. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
