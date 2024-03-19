@@ -1,4 +1,4 @@
-name: 'Test Workflow'
+name: 'PR Workflow'
 
 permissions:
   security-events: write
@@ -31,41 +31,41 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
-        
-  on_pr_merged:
-    if: github.event.pull_request.merged
-    name: "PR is merged"
-    runs-on: "ubuntu-latest"
-    env:
-      STAGE: "pr-${{ github.event.number}}"
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
 
-      - name: Echo stuff
-        run: |
-          echo "PR is merged. stage: $STAGE"
-          echo "### Stage is: $STAGE" >> "$GITHUB_STEP_SUMMARY"
-          
   on_pr_opened:
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == false
-    name: "PR is opened"
+    name: "PR is opened. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
           echo "PR is opened. stage: $STAGE"
+          echo "### Stage is: $STAGE" >> "$GITHUB_STEP_SUMMARY"
+        
+  on_pr_merged:
+    if: github.event.pull_request.merged
+    name: "PR is merged. pr-${{ github.event.number}}"
+    runs-on: "ubuntu-latest"
+    env:
+      STAGE: "pr-${{ github.event.number}}"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "PR is merged. stage: $STAGE"
           echo "### Stage is: $STAGE" >> "$GITHUB_STEP_SUMMARY"
 
   on_main_branch_only:
@@ -74,7 +74,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
@@ -86,7 +86,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
@@ -98,7 +98,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
