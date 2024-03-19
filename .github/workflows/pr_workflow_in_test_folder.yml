@@ -45,7 +45,7 @@ jobs:
 
   on_pr_opened:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
-    name: "PR is opened. $env.TARGET_STAGE"
+    name: "PR is opened. $TARGET_STAGE"
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
@@ -55,8 +55,8 @@ jobs:
 
       - name: Echo stuff
         run: |
-          echo "### PR is opened. stage: $STAGE"
-          echo "### PR is opened. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
+          echo "### PR is opened. stage: $TARGET_STAGE"
+          echo "### PR is opened. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
         
   on_pr_merged:
     if: github.event.pull_request.merged
