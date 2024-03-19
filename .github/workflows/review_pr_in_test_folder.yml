@@ -1,4 +1,4 @@
-name: 'Review PR'
+name: 'Test Workflow'
 
 permissions:
   security-events: write
