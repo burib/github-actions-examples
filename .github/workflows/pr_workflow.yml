@@ -1,0 +1,134 @@
+name: 'PR Workflow'
+
+permissions:
+  security-events: write
+  actions: read
+  id-token: write
+  contents: write
+  pull-requests: write
+
+on:
+  # push:
+  workflow_dispatch:
+    inputs:
+      target_stage:
+        type: choice
+        description: Which stage to deploy to.
+        options:
+          - dev
+          - prod
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    paths:
+      - src/**
+
+env:
+  TARGET_STAGE: "pr-${{ github.event.number }}"
+  TARGET_ENVIRONMENT: "dev"
+
+jobs:
+  debug:
+    name: "Dump GitHub context"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+  on_pr_opened:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    name: "PR is opened. pr-${{ github.event.number}}"
+    runs-on: "ubuntu-latest"
+    environment: 
+      name: "pr-${{ github.event.number }}"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "### PR is opened. stage: $TARGET_STAGE"
+          echo "### PR is opened. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
+        
+  on_pr_merged:
+    if: github.event.pull_request.merged
+    name: "PR is merged. pr-${{ github.event.number}}"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "### PR is merged. stage: $TARGET_STAGE"
+          echo "### PR is merged. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
+          
+  on_pr_closed_without_merge:
+    if: github.event_name == 'pull_request' && ( github.event.action == 'closed' && github.event.pull_request.merged == false )
+    name: "PR is closed without merge. pr-${{ github.event.number}}"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "### PR is closed without merge. stage: $TARGET_STAGE"
+          echo "### PR is closed without merge. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
+
+  on_pr_closed_or_merged:
+    if: github.event_name == 'pull_request' && ( github.event.action == 'closed' || github.event.pull_request.merged )
+    name: "PR is closed or merged. pr-${{ github.event.number}}"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "### PR is closed or merged. stage: $TARGET_STAGE"
+          echo "### PR is closed or merged. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
+
+  on_main_branch_only:
+    if: github.ref == 'refs/heads/main'
+    name: "Runs on Main branch only"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "hello main branch"
+
+  on_manual_invoke_only:
+    if: github.event_name == 'workflow_dispatch'
+    name: "Runs on Manual invoke only"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "hello manual invoke workflow"
+
+  on_main_or_manual_invoke:
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    name: "Runs on Main branch or manual invoke"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Echo stuff
+        run: |
+          echo "hello manual branch or manual invoke workflow"
