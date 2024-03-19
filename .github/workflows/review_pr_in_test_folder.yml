@@ -8,6 +8,14 @@ permissions:
   pull-requests: write
 
 on:
+  workflow_dispatch:
+    inputs:
+      target_stage:
+        type: choice
+        description: Which stage to deploy to.
+        options:
+          - dev
+          - prod
   pull_request:
     types:
       - opened
@@ -16,8 +24,6 @@ on:
       - closed
     paths:
       - test_folder/**
-  workflow_dispatch:
-
 jobs:
   debug:
     name: "Dump GitHub context"
@@ -54,3 +60,39 @@ jobs:
       - name: Echo stuff
         run: |
           echo "PR is opened"
+
+  on_main_branch_only:
+    if: github.ref == 'refs/heads/main'
+    name: "Runs on Main branch only"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Echo stuff
+        run: |
+          echo "hello main branch"
+
+  on_manual_invoke_only:
+    if: github.event_name == 'workflow_dispatch'
+    name: "Runs on Manual invoke only"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Echo stuff
+        run: |
+          echo "hello manual invoke workflow"
+
+  on_main_or_manual_invoke:
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    name: "Runs on Main branch or manual invoke"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Echo stuff
+        run: |
+          echo "hello manual branch or manual invoke workflow"
