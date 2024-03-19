@@ -16,14 +16,14 @@ on:
         options:
           - dev
           - prod
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - closed
-    paths:
-      - test_folder/**
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - synchronize
+  #     - reopened
+  #     - closed
+  #   paths:
+  #     - test_folder/**
 jobs:
   debug:
     name: "Dump GitHub context"
