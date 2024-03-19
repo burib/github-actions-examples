@@ -1,4 +1,4 @@
-name: 'Test Workflow'
+name: 'PR Workflow'
 
 permissions:
   security-events: write
@@ -55,7 +55,7 @@ jobs:
         
   on_pr_merged:
     if: github.event.pull_request.merged
-    name: "PR is merged"
+    name: "PR is merged. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
