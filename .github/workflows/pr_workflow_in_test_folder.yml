@@ -45,10 +45,8 @@ jobs:
 
   on_pr_opened:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
-    name: "PR is opened. $TARGET_STAGE"
+    name: "PR is opened. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
-    env:
-      STAGE: "pr-${{ github.event.number}}"
     environment: 
       name: "pr-${{ github.event.number }}"
     steps:
@@ -64,46 +62,40 @@ jobs:
     if: github.event.pull_request.merged
     name: "PR is merged. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
-    env:
-      STAGE: "pr-${{ github.event.number}}"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
-          echo "### PR is merged. stage: $STAGE"
-          echo "### PR is merged. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
+          echo "### PR is merged. stage: $TARGET_STAGE"
+          echo "### PR is merged. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
           
   on_pr_closed_without_merge:
     if: github.event_name == 'pull_request' && ( github.event.action == 'closed' && github.event.pull_request.merged == false )
     name: "PR is closed without merge. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
-    env:
-      STAGE: "pr-${{ github.event.number}}"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
-          echo "### PR is closed without merge. stage: $STAGE"
-          echo "### PR is closed without merge. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
+          echo "### PR is closed without merge. stage: $TARGET_STAGE"
+          echo "### PR is closed without merge. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
 
   on_pr_closed_or_merged:
     if: github.event_name == 'pull_request' && ( github.event.action == 'closed' || github.event.pull_request.merged )
     name: "PR is closed or merged. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
-    env:
-      STAGE: "pr-${{ github.event.number}}"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Echo stuff
         run: |
-          echo "### PR is closed or merged. stage: $STAGE"
-          echo "### PR is closed or merged. stage: $STAGE" >> "$GITHUB_STEP_SUMMARY"
+          echo "### PR is closed or merged. stage: $TARGET_STAGE"
+          echo "### PR is closed or merged. stage: $TARGET_STAGE" >> "$GITHUB_STEP_SUMMARY"
 
   on_main_branch_only:
     if: github.ref == 'refs/heads/main'
