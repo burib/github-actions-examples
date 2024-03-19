@@ -40,7 +40,7 @@ jobs:
 
   on_pr_opened:
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == false
-    name: "PR is opened. $STAGE"
+    name: "PR is opened. pr-${{ github.event.number}}"
     runs-on: "ubuntu-latest"
     env:
       STAGE: "pr-${{ github.event.number}}"
