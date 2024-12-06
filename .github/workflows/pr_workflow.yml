@@ -121,20 +121,6 @@ jobs:
         run: |
           echo "hello manual invoke workflow"
 
-  on_manual_invoke_only_requiring_approval:
-    if: github.event_name == 'workflow_dispatch'
-    name: "Runs on Manual invoke only And Require Approval"
-    runs-on: "ubuntu-latest"
-    environment:
-      name: "this-environment-needs-manual-approval-before-it-runs"
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Echo stuff
-        run: |
-          echo "hello manual invoke workflow with approval flow."
-
   on_main_or_manual_invoke:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     name: "Runs on Main branch or manual invoke"
