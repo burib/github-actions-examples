@@ -1,0 +1,23 @@
+name: 'Manual Approval Flow Example'
+
+permissions:
+  security-events: write
+  actions: read
+  id-token: write
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+
+jobs:
+  on_manual_invoke_only_requiring_approval:
+    if: github.event_name == 'workflow_dispatch'
+    name: "Runs on Manual invoke only And Require Approval"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: "this-environment-needs-manual-approval-before-it-runs"
+    steps:
+      - name: Echo stuff
+        run: |
+          echo "hello manual invoke workflow with approval flow."
